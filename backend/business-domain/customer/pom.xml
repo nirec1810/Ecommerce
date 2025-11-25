@@ -7,14 +7,14 @@
         <groupId>com.ecommerce.businessdomain</groupId>
         <artifactId>businessdomain-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath> 
     </parent>
 
+    <groupId>com.ecommerce.microservices</groupId>
     <artifactId>customer-service</artifactId>
-    <name>customer-service</name>
-    <description>Microservicio de Clientes</description>
-    <groupId>com.ads.ecommerce.microservices</groupId>
     <version>0.0.1-SNAPSHOT</version>
+    <name>customer-service</name>
+    <description>Microservicio de clientes</description>
 
     <dependencies>
         <dependency>
@@ -26,13 +26,12 @@
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
+        
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
-
+        
         </dependencies>
-
-</project>
+    
+    </project>
