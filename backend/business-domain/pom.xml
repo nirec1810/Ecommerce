@@ -26,6 +26,8 @@
         <module>order</module>
         <module>product</module>
         <module>customer</module>
+        <module>eureka-server</module>
+        <module>admin</module>
     </modules>
 
     <dependencyManagement>
