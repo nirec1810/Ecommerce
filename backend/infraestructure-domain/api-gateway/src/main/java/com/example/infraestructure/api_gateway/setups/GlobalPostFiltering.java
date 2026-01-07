@@ -1,31 +1,25 @@
 package com.example.infraestructure.api_gateway.setups;
 
 import org.springframework.cloud.gateway.filter.GlobalFilter;
-import org.springframework.core.Ordered;
-import org.springframework.stereotype.Component;
-import org.springframework.web.server.ServerWebExchange;
-import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
-@Component
-public class GlobalPostFiltering implements GlobalFilter, Ordered {
 
-    private static final org.slf4j.Logger log =
-            org.slf4j.LoggerFactory.getLogger(GlobalPostFiltering.class);
+@Configuration
+@Slf4j
+public class GlobalPostFiltering {
 
-    @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-
-        return chain.filter(exchange).then(
-                Mono.fromRunnable(() -> {
-                    log.info("<<<< [POST FILTER - 3] Respuesta saliente. Status: {}",
-                            exchange.getResponse().getStatusCode());
-                })
-        );
+    @Bean
+    public GlobalFilter postGlobalFilter() {
+        return (exchange, chain) -> {
+            return chain.filter(exchange)
+                .then(Mono.fromRunnable(()-> {
+                    log.info("*************Global post  Filter executed***********************");
+                }));
+        };
     }
 
-    @Override
-    public int getOrder() {
-        return 10; 
-    }
 }
