@@ -1,0 +1,78 @@
+version: '3.8'
+ 
+services:
+  # 1. Eureka (El nombre de este servicio es la "IP" para los demás)
+  eureka-server:
+    build: ./infraestructure-domain/eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - ecommerce-net
+ 
+  # 2. Microservicio de Customers
+  customer-service:
+    build: ./business-domain/customer
+    environment:
+      - EUREKA_HOST=eureka-server
+    depends_on:
+      - eureka-server
+    networks:
+      - ecommerce-net
+ 
+  # 3. Microservicio de Órdenes
+  order-service:
+    build: ./business-domain/order
+    environment:
+      - EUREKA_HOST=eureka-server
+    depends_on:
+      - eureka-server
+    networks:
+      - ecommerce-net
+ 
+  # 4. Microservicio de productos
+  product-service:
+    build: ./business-domain/product
+    environment:
+      - EUREKA_HOST=eureka-server
+    depends_on:
+      - eureka-server
+    networks:
+      - ecommerce-net
+ 
+  # 5. El Keycloack Adapter
+  keycloak-adapter:
+    build: ./infraestructure-domain/keycloakAdapter
+    environment:
+      - EUREKA_HOST=eureka-server
+    depends_on:
+      - eureka-server
+    networks:
+      - ecommerce-net
+  # administracion
+  admin-service:
+    build: ./infraestructure-domain/admin
+    environment:
+      - EUREKA_HOST=eureka-server
+    depends_on:
+      - eureka-server
+    networks:
+      - ecommerce-net
+
+  # 6. Microservicio de apigateway
+  apigateway-service:
+    build: ./infraestructure-domain/api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      # Esta es la forma infalible: nombre de la propiedad en MAYÚSCULAS y con guiones bajos
+      - SPRING_CLOUD_GATEWAY_EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - EUREKA_HOST=eureka-server
+    depends_on:
+      - eureka-server
+    networks:
+      - ecommerce-net
+ 
+networks:
+  ecommerce-net:
+    driver: bridge

@@ -1,4 +1,5 @@
 FROM eclipse-temurin:17-jdk-focal
+EXPOSE 8761
 # Crear grupo y usuario para seguridad
 RUN groupadd -r ecommerce && useradd -r -g ecommerce admin
 VOLUME /tmp
